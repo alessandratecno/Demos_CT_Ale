@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <h2>Gerar SQL de deleção por CNPJ</h2>
+  <form method="post" class="form-grid">
+    <label>CNPJ
+      <input name="cnpj" value="{{ cnpj }}" placeholder="26263149000157" required>
+    </label>
+
+    <label>Tabela
+      <select name="table">
+        <option value="__all__">Todas as tabelas relacionadas</option>
+        {% for table in table_options %}
+          <option value="{{ table }}" {% if table == selected_table %}selected{% endif %}>{{ table }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <div class="actions">
+      <button type="submit">Gerar SQL</button>
+    </div>
+  </form>
+
+  {% if user_id %}
+    <p><strong>User ID encontrado:</strong> {{ user_id }}</p>
+  {% endif %}
+
+  <label>Retorno SQL (copiável)
+    <textarea rows="12" readonly>{{ sql_output }}</textarea>
+  </label>
+</section>
+{% endblock %}
