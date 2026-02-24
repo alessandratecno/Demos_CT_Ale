@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -17,10 +18,29 @@ import mysql.connector
 from flask import Flask, flash, redirect, render_template, request, url_for
 from mysql.connector import Error
 
-app = Flask(__name__)
+
+def resource_path(relative_path: str) -> Path:
+    """Retorna caminho para arquivos de template/static em execução normal ou empacotada."""
+    if hasattr(sys, "_MEIPASS"):
+        return Path(getattr(sys, "_MEIPASS")) / relative_path
+    return Path(__file__).resolve().parent / relative_path
+
+
+def writable_config_path() -> Path:
+    """Sempre grava config ao lado do executável (ou do app.py no modo dev)."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent / "db_config.json"
+    return Path(__file__).resolve().parent / "db_config.json"
+
+
+app = Flask(
+    __name__,
+    template_folder=str(resource_path("templates")),
+    static_folder=str(resource_path("static")),
+)
 app.secret_key = "notasegura-local-secret"
 
-CONFIG_PATH = Path("db_config.json")
+CONFIG_PATH = writable_config_path()
 DEFAULT_CONFIG = {
     "host": "notasegura-cluster.cluster-cyswk2h7td5h.us-east-1.rds.amazonaws.com",
     "port": 53861,
