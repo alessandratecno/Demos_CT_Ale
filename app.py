@@ -4,6 +4,15 @@ import json
 from pathlib import Path
 from typing import Any
 
+# Compatibilidade: alguns ambientes/plug-ins tentam importar MySQLdb.
+# O PyMySQL fornece esse módulo via alias, evitando ModuleNotFoundError.
+try:
+    import MySQLdb  # type: ignore  # noqa: F401
+except ModuleNotFoundError:
+    import pymysql
+
+    pymysql.install_as_MySQLdb()
+
 import mysql.connector
 from flask import Flask, flash, redirect, render_template, request, url_for
 from mysql.connector import Error

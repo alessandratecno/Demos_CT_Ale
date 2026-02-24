@@ -20,3 +20,18 @@ Acesse: http://localhost:8000
 
 - A configuração salva fica em `db_config.json` (arquivo local).
 - O SQL é apenas **gerado e exibido** para cópia; não há execução automática de `DELETE`.
+
+## Solução de problemas
+
+### `ModuleNotFoundError: No module named 'MySQLdb'`
+
+Esse erro acontece em alguns ambientes quando alguma lib espera o módulo `MySQLdb`.
+
+Este projeto já inclui compatibilidade via `PyMySQL` (instalado em `requirements.txt` e registrado com `install_as_MySQLdb()` no startup), então normalmente basta reinstalar as dependências no venv:
+
+```bash
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+python app.py
+```
