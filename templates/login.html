@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <h2>Configuração de conexão MySQL</h2>
+  <form method="post" class="form-grid">
+    <label>Host
+      <input name="host" value="{{ config.host }}" required>
+    </label>
+    <label>Porta
+      <input name="port" value="{{ config.port }}" type="number" required>
+    </label>
+    <label>Banco
+      <input name="database" value="{{ config.database }}" required>
+    </label>
+    <label>Usuário
+      <input name="user" value="{{ config.user }}" required>
+    </label>
+    <label>Senha
+      <input name="password" value="{{ config.password }}" type="password" required>
+    </label>
+
+    <div class="actions">
+      <button type="submit" name="action" value="test">Testar conexão</button>
+      <button type="submit" name="action" value="save">Salvar configuração</button>
+    </div>
+  </form>
+</section>
+{% endblock %}
